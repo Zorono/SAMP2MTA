@@ -198,7 +198,9 @@ addEventHandler('onResourceStart', resourceRoot,
             for i, gamemode in ipairs(gamemodes) do
                 if i > MAX_GAMEMODES then
                     outputDebugString('I couldn\'t load any gamemode script. Gamemodes limit is reached. Unable to load ' .. gamemode .. '.amx"', 1)
-                    stopResource(getThisResource())
+                    if not isResourceProtected(getThisResource()) then
+                        stopResource(getThisResource())
+                    end
                     break
                 end
                 if isGMLoaded == false then
@@ -211,7 +213,9 @@ addEventHandler('onResourceStart', resourceRoot,
             end
         else
             outputDebugString('I couldn\'t load any gamemode script. Please verify your meta.xml', 1)
-            stopResource(getThisResource())
+            if not isResourceProtected(getThisResource()) then
+                stopResource(getThisResource())
+            end
 		end
 
 		local filterscripts = get(getResourceName(getThisResource()) .. '.filterscripts')
@@ -233,7 +237,9 @@ addEventHandler('onResourceStart', resourceRoot,
 
         if get(getResourceName(getThisResource()) .. '.rcon_password') == 'changeme' then
             outputDebugString('Error: Your password must be changed from the default password, please change it.', 1)
-            stopResource(getThisResource())
+            if not isResourceProtected(getThisResource()) then
+                stopResource(getThisResource())
+            end
         end
 
 		-- TODO(q): this needs to be added back later
