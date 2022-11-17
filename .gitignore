@@ -1,13 +1,40 @@
+build/**
+
 amx-deps/src/.___TMP
 **/*~
-amx/resources/plugins/*.dll
-amx/resources/plugins/*.so
-amx/resources/plugins/*.pdb
-**/*.o
-**/*.d
-**/*.exe
-**/*.dll
-**/*.so
-**/*.pdb
-**/*.pid
+# CMake && Make...
+amx-deps/src/**/cmake_install.cmake
+amx-deps/src/**/CMakeLists.txt
+amx-deps/src/**/CMakeFiles/**
+amx-deps/src/**/CMakeCache.txt
+amx-deps/src/**/Makefile
+
+# Prerequisites
+amx-deps/src/**/*.d
+
+# Compiled Object files
+amx-deps/src/**/*.slo
+amx-deps/src/**/*.lo
+amx-deps/src/**/*.o
+amx-deps/src/**/*.obj
+
+# Precompiled Headers
+amx-deps/src/**/*.gch
+amx-deps/src/**/*.pch
+
+# Compiled Dynamic libraries
+amx-deps/src/**/*.so
+amx-deps/src/**/*.dylib
+amx-deps/src/**/*.dll
+
+# Compiled Static libraries
+amx-deps/src/**/*.lai
+amx-deps/src/**/*.la
+amx-deps/src/**/*.a
+amx-deps/src/**/*.lib
+
+# Debug Symbols
+amx-deps/src/**/*.pdb
+
+# Memory dump
 **/*.dmp

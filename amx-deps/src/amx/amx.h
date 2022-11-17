@@ -87,15 +87,24 @@
   #endif
 #endif
 
+#if !defined arraysize
+  #define arraysize(array)  (sizeof(array) / sizeof((array)[0]))
+#endif
+
 #if !defined assert_static
-  /* see "Compile-Time Assertions" by Ralf Holly,
-   * C/C++ Users Journal, November 2004
-   * with modification from Sшren Hannibal
-   */
-  #define assert_static(e) \
-    do { \
-      enum { assert_static__ = 1/((e)?1:0) }; \
-    } while (0)
+  #if (defined __STDC_VERSION__ && __STDC_VERSION__ >= 201112) || GCC_VERSION >= 40600
+    #define assert_static(test) _Static_assert(test, "assert")
+  #else
+    /* see "Compile-Time Assertions" by Greg Miller,
+     * (with modifications to port it to C)
+     */
+    #define _ASSERT_STATIC_SYMBOL_INNER(line) __ASSERT_STATIC_ ## line
+    #define _ASSERT_STATIC_SYMBOL(line) _ASSERT_STATIC_SYMBOL_INNER(line)
+    #define assert_static(test) \
+      do { \
+        typedef char _ASSERT_STATIC_SYMBOL(__LINE__)[ ((test) ? 1 : -1) ]; \
+      } while (0)
+  #endif
 #endif
 
 #ifdef  __cplusplus

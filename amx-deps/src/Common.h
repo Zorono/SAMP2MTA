@@ -22,8 +22,6 @@ extern "C"
     #include "lua/lualib.h"
     #include "lua/lauxlib.h"
 	#include "lua/lobject.h"
-
-	#include "sqlite/sqlite_amx.c"
 }
 
 #if defined(_WIN32) || defined(WIN32) || defined(__WIN32__) || defined(_WIN64)

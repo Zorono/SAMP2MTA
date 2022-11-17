@@ -87,7 +87,7 @@ void *amxFunctions[] = {
 
 MTAEXPORT bool InitModule ( ILuaModuleManager10 *pManager, char *szModuleName, char *szAuthor, float *fVersion )
 {
-    printf("  '%s' module v%d is being Loaded!", MODULE_NAME, MODULE_VERSION);
+    printf("  '%s' module v%d is being Loaded!", MODULE_NAME, (int)MODULE_VERSION);
     printf("  Author: %s", MODULE_AUTHOR);
     printf("  Maintainer: Zorono");
     printf("  Built on: %s at %s", __DATE__, __TIME__);
