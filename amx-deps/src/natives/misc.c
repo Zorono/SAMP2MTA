@@ -4,7 +4,7 @@
 // native SHA256_PassHash(password[], salt[], ret_hash[], ret_hash_len);
 static cell AMX_NATIVE_CALL n_SHA256_PassHash(AMX *amx, cell *params)
 {
-    CHECK_PARAMS(3, "SHA256_PassHash");
+    CheckNumberOfArguments(amx, params, 3);
 	char* szPassword;
 	char* szSalt;
 	amx_StrParam(amx, params[1], szPassword);

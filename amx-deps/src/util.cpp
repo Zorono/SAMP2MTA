@@ -270,4 +270,143 @@ extern "C" int set_amxstring(AMX *amx,cell amx_addr,const char *source,int max)
   return dest-start;
 }
 
-#define CHECK_PARAMS(num,func) if (params[0] != (num * sizeof(cell))) { logprintf("%s: Bad parameter count (Count is %d, Should be %d)", func, params[0] / sizeof(cell), num); return 0; }
+char *GetCurrentNativeFunctionName(AMX *amx) // http://pro-pawn.ru/showthread.php?14522
+{
+    #if (6 <= CUR_FILE_VERSION) && (CUR_FILE_VERSION <= 8)
+		const cell OP_SYSREQ_C = 123, OP_SYSREQ_D = 135;
+    #elif CUR_FILE_VERSION == 9
+		const cell OP_SYSREQ_C = 123, OP_SYSREQ_D = 158, OP_SYSREQ_ND = 159;
+		const cell OP_SYSREQ_N = 135;
+    #elif CUR_FILE_VERSION == 10
+		const cell OP_SYSREQ_C = 123, OP_SYSREQ_D = 213, OP_SYSREQ_ND = 214;
+		const cell OP_SYSREQ_N = 135;
+    #elif CUR_FILE_VERSION == 11
+		const cell OP_SYSREQ_C = 69, OP_SYSREQ_D = 75, OP_SYSREQ_ND = 76;
+		const cell OP_SYSREQ_N = 112;
+    #else
+		#error Unsupported version of AMX instruction set.
+    #endif
+
+		AMX_HEADER *hdr = (AMX_HEADER *)amx->base;
+		AMX_FUNCSTUB *natives =
+			(AMX_FUNCSTUB *)((size_t)hdr + (size_t)hdr->natives);
+		const size_t defsize = (size_t)hdr->defsize;
+		const cell num_natives =
+			(cell)(hdr->libraries - hdr->natives) / (cell)defsize;
+		AMX_FUNCSTUB *func = NULL;
+    #ifndef AMX_FLAG_OVERLAY
+		unsigned char *code = amx->base + (size_t)(hdr->cod);
+    #else
+		unsigned char *code = amx->code;
+    #endif
+		cell op_addr, opcode;
+
+		static cell *jump_table = NULL;
+		static bool jump_table_checked = false;
+		if (!jump_table_checked)
+		{
+			// On Pawn 4.0 there's no clear way to get the jump table,
+			// so only the ANSI C version of the interpreter core is supported.
+    #if CUR_FILE_VERSION < 11
+			// Set the AMX_FLAG_BROWSE flag and call amx_Exec.
+			// If there's no jump table (ANSI C version) amx_Exec would just
+			// stumble upon the HALT instruction at address 0 and return.
+			const int flags_bck = amx->flags;
+			const cell cip_bck = amx->cip;
+			const cell pri_bck = amx->pri;
+	#if defined AMX_FLAG_BROWSE
+			amx->flags |= AMX_FLAG_BROWSE;
+	#else
+			amx->flags |= AMX_FLAG_VERIFY;
+	#endif
+			amx->pri = 0;
+			amx->cip = 0;
+			amx_Exec(amx, (cell *)(size_t)&jump_table, AMX_EXEC_CONT);
+			amx->cip = cip_bck;
+			amx->pri = pri_bck;
+			amx->flags = flags_bck;
+    #endif // CUR_FILE_VERSION < 11
+			jump_table_checked = true;
+		}
+
+    #ifdef AMX_FLAG_SYSREQN
+		if (amx->flags & AMX_FLAG_SYSREQN)
+		{
+			op_addr = amx->cip - 3 * sizeof(cell);
+			if (op_addr < 0)
+				goto ret;
+			opcode = *(cell *)(code + (size_t)op_addr);
+			if (jump_table != NULL)
+			{
+				if (opcode == jump_table[OP_SYSREQ_N])
+					goto sysreq_c;
+				if (opcode == jump_table[OP_SYSREQ_ND])
+					goto sysreq_d;
+				goto ret;
+			}
+			if (opcode == OP_SYSREQ_N)
+				goto sysreq_c;
+			if (opcode == OP_SYSREQ_ND)
+				goto sysreq_d;
+			goto ret;
+		}
+    #endif
+
+		op_addr = amx->cip - 2 * (cell)sizeof(cell);
+		if (op_addr < 0)
+			goto ret;
+		opcode = *(cell *)(void *)(code + (size_t)op_addr);
+
+		if ((jump_table != NULL)
+			? (opcode == jump_table[OP_SYSREQ_C]) : (opcode == OP_SYSREQ_C))
+		{
+    #ifdef AMX_FLAG_SYSREQN
+	sysreq_c:
+    #endif
+			const cell func_index =
+				*(cell *)(void *)(code + (size_t)op_addr + sizeof(cell));
+			if (func_index < num_natives)
+				func = (AMX_FUNCSTUB *)((unsigned char *)(void *)natives +
+					(size_t)func_index * (size_t)hdr->defsize);
+			goto ret;
+		}
+		if ((jump_table != NULL)
+			? (opcode == jump_table[OP_SYSREQ_D]) : (opcode == OP_SYSREQ_D))
+		{
+    #ifdef AMX_FLAG_SYSREQN
+    sysreq_d:
+    #endif
+			const ucell func_addr =
+				*(ucell *)(void *)(code + (size_t)op_addr + sizeof(cell));
+			func = natives;
+			size_t libraries = (size_t)amx->base + (size_t)hdr->libraries;
+			for (; (size_t)natives < libraries; *((size_t *)&func) += defsize)
+				if (func->address == func_addr)
+					goto ret;
+			func = NULL;
+			goto ret;
+		}
+
+	ret:
+		static const char str_unknown[] = "(unknown)";
+		if (NULL == func)
+			return str_unknown;
+    #if CUR_FILE_VERSION < 11
+		if (hdr->defsize == (int16_t)sizeof(AMX_FUNCSTUB))
+			return (const char *)func->name;
+		return (const char *)
+			((size_t)hdr + (size_t)((AMX_FUNCSTUBNT *)func)->nameofs);
+    #else
+		return (const char *)((size_t)hdr + (size_t)func->nameofs);
+    #endif
+}
+
+bool CheckNumberOfArguments(AMX *amx, const cell *params, int num_expected)
+{
+    if (params[0] != (num * sizeof(cell))) {
+        amx_RaiseError(amx, AMX_ERR_PARAMS);
+        logprintf("%s: Incorrect number of arguments (expected %d, got %d).", GetCurrentNativeFunctionName(amx), num_expected, ((int)params[0] / (int)sizeof(cell)));
+        return false;
+    }
+    return true;
+}

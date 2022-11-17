@@ -17,6 +17,7 @@
 #include <string>
 #include <vector>
 #include <variant>
+#include <cstdlib>
 
 #include "Common.h"
 #include "lua/ILuaModuleManager.h"

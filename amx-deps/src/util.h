@@ -40,5 +40,6 @@ std::string getScriptFilePath(AMX *amx, const char *filename);
 extern "C" char* getScriptFilePath(AMX *amx, char *dest, const char *filename, size_t destsize);
 bool isSafePath(const char* path);
 extern "C" int set_amxstring(AMX *amx,cell amx_addr,const char *source,int max);
-
+char *GetCurrentNativeFunctionName(AMX *amx);
+bool CheckNumberOfArguments(AMX *amx, const cell *params, int num_expected);
 #endif
