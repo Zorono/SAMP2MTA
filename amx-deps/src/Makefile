@@ -177,6 +177,30 @@ ml_base.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/samp2mta.dir/build.make CMakeFiles/samp2mta.dir/ml_base.cpp.s
 .PHONY : ml_base.cpp.s
 
+sha256/sha256.o: sha256/sha256.cpp.o
+.PHONY : sha256/sha256.o
+
+# target to build an object file
+sha256/sha256.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/samp2mta.dir/build.make CMakeFiles/samp2mta.dir/sha256/sha256.cpp.o
+.PHONY : sha256/sha256.cpp.o
+
+sha256/sha256.i: sha256/sha256.cpp.i
+.PHONY : sha256/sha256.i
+
+# target to preprocess a source file
+sha256/sha256.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/samp2mta.dir/build.make CMakeFiles/samp2mta.dir/sha256/sha256.cpp.i
+.PHONY : sha256/sha256.cpp.i
+
+sha256/sha256.s: sha256/sha256.cpp.s
+.PHONY : sha256/sha256.s
+
+# target to generate assembly for a file
+sha256/sha256.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/samp2mta.dir/build.make CMakeFiles/samp2mta.dir/sha256/sha256.cpp.s
+.PHONY : sha256/sha256.cpp.s
+
 util.o: util.cpp.o
 .PHONY : util.o
 
@@ -216,6 +240,9 @@ help:
 	@echo "... ml_base.o"
 	@echo "... ml_base.i"
 	@echo "... ml_base.s"
+	@echo "... sha256/sha256.o"
+	@echo "... sha256/sha256.i"
+	@echo "... sha256/sha256.s"
 	@echo "... util.o"
 	@echo "... util.i"
 	@echo "... util.s"

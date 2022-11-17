@@ -4,10 +4,9 @@ amx-deps/src/.___TMP
 **/*~
 # CMake && Make...
 amx-deps/src/**/cmake_install.cmake
-amx-deps/src/**/CMakeLists.txt
 amx-deps/src/**/CMakeFiles/**
 amx-deps/src/**/CMakeCache.txt
-amx-deps/src/**/Makefile
+amx-deps/src/Makefile
 
 # Prerequisites
 amx-deps/src/**/*.d
