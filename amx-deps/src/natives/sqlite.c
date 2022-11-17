@@ -22,7 +22,7 @@ typedef struct _SQLiteResult
 // native SQLiteDB:sqlite_open(name[]);
 static cell AMX_NATIVE_CALL n_open(AMX* amx, cell* params)
 {
-    CheckNumberOfArguments(amx, params, 1);
+    if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	char *szDBName, szPathName[260];
 	int errorCode, i;
 	sqlite3 *sqlite;
@@ -66,7 +66,7 @@ static cell AMX_NATIVE_CALL n_open(AMX* amx, cell* params)
 // native sqlite_close(SQLiteDB:db);
 static cell AMX_NATIVE_CALL n_close(AMX* amx, cell* params)
 {
-    CheckNumberOfArguments(amx, params, 1);
+    if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	int errorCode;
 	sqlite3 *sqlite;
 
@@ -85,7 +85,7 @@ static cell AMX_NATIVE_CALL n_close(AMX* amx, cell* params)
 // native SQLiteResult:sqlite_query(SQLiteDB:db, query[]);
 static cell AMX_NATIVE_CALL n_query(AMX* amx, cell* params)
 {
-    CheckNumberOfArguments(amx, params, 2);
+    if (CheckNumberOfArguments(amx, params, 2) == false) return 0;
 	char *szQuery;
 	SQLiteResult *result;
 	int errorCode;
@@ -117,7 +117,7 @@ static cell AMX_NATIVE_CALL n_query(AMX* amx, cell* params)
 // native sqlite_free_result(SQLiteResult:result)
 static cell AMX_NATIVE_CALL n_free_result(AMX* amx, cell* params)
 {
-    CheckNumberOfArguments(amx, params, 1);
+    if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	SQLiteResult *result;
 
 	result = (SQLiteResult *)params[1];
@@ -137,7 +137,7 @@ static cell AMX_NATIVE_CALL n_free_result(AMX* amx, cell* params)
 // native sqlite_num_rows(SQLiteResult:result)
 static cell AMX_NATIVE_CALL n_num_rows(AMX* amx, cell* params)
 {
-    CheckNumberOfArguments(amx, params, 1);
+    if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	SQLiteResult *result;
 
 	result = (SQLiteResult *)params[1];
@@ -148,7 +148,7 @@ static cell AMX_NATIVE_CALL n_num_rows(AMX* amx, cell* params)
 // native sqlite_next_row(SQLiteResult:result)
 static cell AMX_NATIVE_CALL n_next_row(AMX* amx, cell* params)
 {
-    CheckNumberOfArguments(amx, params, 1);
+    if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	SQLiteResult *result;
 
 	result = (SQLiteResult *)params[1];
@@ -166,7 +166,7 @@ static cell AMX_NATIVE_CALL n_next_row(AMX* amx, cell* params)
 // native sqlite_num_fields(SQLiteResult:result)
 static cell AMX_NATIVE_CALL n_num_fields(AMX* amx, cell* params)
 {
-    CheckNumberOfArguments(amx, params, 1);
+    if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	SQLiteResult *result;
 
 	result = (SQLiteResult *)params[1];
@@ -177,7 +177,7 @@ static cell AMX_NATIVE_CALL n_num_fields(AMX* amx, cell* params)
 // native sqlite_field_name(SQLiteResult:result, field, fieldname[], maxlength = sizeof fieldname );
 static cell AMX_NATIVE_CALL n_field_name(AMX* amx, cell* params)
 {
-    CheckNumberOfArguments(amx, params, 4);
+    if (CheckNumberOfArguments(amx, params, 4) == false) return 0;
 	SQLiteResult *result;
 	int field;
 
@@ -199,7 +199,7 @@ static cell AMX_NATIVE_CALL n_field_name(AMX* amx, cell* params)
 // native sqlite_get_field(SQLiteResult:result, field, fieldvalue[], maxlength = sizeof fieldvalue );
 static cell AMX_NATIVE_CALL n_get_field(AMX* amx, cell* params)
 {
-    CheckNumberOfArguments(amx, params, 4);
+    if (CheckNumberOfArguments(amx, params, 4) == false) return 0;
 	SQLiteResult *result;
 	int field;
 
@@ -221,7 +221,7 @@ static cell AMX_NATIVE_CALL n_get_field(AMX* amx, cell* params)
 // native sqlite_get_field_assoc(SQLiteResult:result, const field[], fieldvalue[], maxlength = sizeof fieldvalue );
 static cell AMX_NATIVE_CALL n_get_field_assoc(AMX* amx, cell* params)
 {
-    CheckNumberOfArguments(amx, params, 4);
+    if (CheckNumberOfArguments(amx, params, 4) == false) return 0;
 	SQLiteResult *result;
 	int field, i;
 	char *szFieldName;
