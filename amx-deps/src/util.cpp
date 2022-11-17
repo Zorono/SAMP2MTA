@@ -270,6 +270,11 @@ extern "C" int set_amxstring(AMX *amx,cell amx_addr,const char *source,int max)
   return dest-start;
 }
 
+void logprintf(char *fmt, ...) {
+	vprintf(fmt, (va_list)(&fmt + 1));
+	printf("\n");
+}
+
 char *GetCurrentNativeFunctionName(AMX *amx) // http://pro-pawn.ru/showthread.php?14522
 {
     #if (6 <= CUR_FILE_VERSION) && (CUR_FILE_VERSION <= 8)

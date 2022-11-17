@@ -33,7 +33,6 @@
 #define MODULE_VERSION		1.1
 #define MODULE_VERSIONSTRING "MTA AMX compatibility layer RC2"
 
-void logprintf(char *fmt, ...);
 int AMXCallPublicFilterScript(char *fnName);
 int AMXCallPublicGameMode(char *fnName);
 

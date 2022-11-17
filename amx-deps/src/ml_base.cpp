@@ -137,11 +137,6 @@ MTAEXPORT bool InitModule ( ILuaModuleManager10 *pManager, char *szModuleName, c
 	return true;
 }
 
-void logprintf(char *fmt, ...) {
-	vprintf(fmt, (va_list)(&fmt + 1));
-	printf("\n");
-}
-
 int AMXCallPublicFilterScript(char *fnName) {
 	int fnIndex = -1;
 	cell ret = 0;

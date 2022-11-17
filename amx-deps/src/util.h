@@ -26,6 +26,8 @@
 	#define DWORD unsigned long
 #endif
 
+void *(*logprintf)(const char *fmt, ...);
+
 // Util functions
 int setenv_portable(const char* name, const char* value, int overwrite);
 const char* getenv_portable(const char* name);
