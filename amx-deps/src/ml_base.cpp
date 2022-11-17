@@ -134,6 +134,7 @@ MTAEXPORT bool InitModule ( ILuaModuleManager10 *pManager, char *szModuleName, c
 	} else {
 		pModuleManager->ErrorPrintf("scriptfiles directory doesn't exist at: %s\n", scriptfilespath.string());
 	}
+    logprintf = (void *(*)(const char *fmt, ...))pluginInitData[PLUGIN_DATA_LOGPRINTF];
 	return true;
 }
 
