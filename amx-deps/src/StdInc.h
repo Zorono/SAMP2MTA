@@ -8,6 +8,7 @@
 #   pragma warning(disable: 4996) // DISABLE: 'strcpy': This function or variable may be unsafe.
 #endif
 
+
 #if defined(_WIN32) || defined(WIN32) || defined(__WIN32__) || defined(_WIN64)
     #define WIN32_LEAN_AND_MEAN
 	#include <windows.h>

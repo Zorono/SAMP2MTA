@@ -2,7 +2,7 @@
 #include "../sha256/sha256.h"
 
 // native SHA256_PassHash(password[], salt[], ret_hash[], ret_hash_len);
-static cell AMX_NATIVE_CALL n_SHA256_PassHash(AMX *amx, cell *params)
+static cell AMX_NATIVE_CALL ___SHA256_PassHash(AMX *amx, cell *params)
 {
     if (CheckNumberOfArguments(amx, params, 3) == false) return 0;
 	char* szPassword;
@@ -15,9 +15,9 @@ static cell AMX_NATIVE_CALL n_SHA256_PassHash(AMX *amx, cell *params)
 	return set_amxstring(amx, params[3], szResult, params[4]);
 }
 
-AMX_NATIVE_INFO sampMisc_Natives[] = {
-  { "SHA256_PassHash",  n_SHA256_PassHash },
-  { NULL, NULL }        /* terminator */
+extern "C" const AMX_NATIVE_INFO sampMisc_Natives[] = {
+  { "SHA256_PassHash",  ___SHA256_PassHash },
+  { NULL, NULL }
 };
 
 int AMXEXPORT amx_sampMiscInit(AMX *amx)

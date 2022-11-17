@@ -20,7 +20,7 @@ typedef struct _SQLiteResult
 //--------------------------------------------------------------------------------------
 
 // native SQLiteDB:sqlite_open(name[]);
-static cell AMX_NATIVE_CALL n_open(AMX* amx, cell* params)
+static cell AMX_NATIVE_CALL ___open(AMX* amx, cell* params)
 {
     if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	char *szDBName, szPathName[260];
@@ -64,7 +64,7 @@ static cell AMX_NATIVE_CALL n_open(AMX* amx, cell* params)
 }
 
 // native sqlite_close(SQLiteDB:db);
-static cell AMX_NATIVE_CALL n_close(AMX* amx, cell* params)
+static cell AMX_NATIVE_CALL ___close(AMX* amx, cell* params)
 {
     if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	int errorCode;
@@ -83,7 +83,7 @@ static cell AMX_NATIVE_CALL n_close(AMX* amx, cell* params)
 }
 
 // native SQLiteResult:sqlite_query(SQLiteDB:db, query[]);
-static cell AMX_NATIVE_CALL n_query(AMX* amx, cell* params)
+static cell AMX_NATIVE_CALL ___query(AMX* amx, cell* params)
 {
     if (CheckNumberOfArguments(amx, params, 2) == false) return 0;
 	char *szQuery;
@@ -115,7 +115,7 @@ static cell AMX_NATIVE_CALL n_query(AMX* amx, cell* params)
 }
 
 // native sqlite_free_result(SQLiteResult:result)
-static cell AMX_NATIVE_CALL n_free_result(AMX* amx, cell* params)
+static cell AMX_NATIVE_CALL ___free_result(AMX* amx, cell* params)
 {
     if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	SQLiteResult *result;
@@ -135,7 +135,7 @@ static cell AMX_NATIVE_CALL n_free_result(AMX* amx, cell* params)
 
 
 // native sqlite_num_rows(SQLiteResult:result)
-static cell AMX_NATIVE_CALL n_num_rows(AMX* amx, cell* params)
+static cell AMX_NATIVE_CALL ___num_rows(AMX* amx, cell* params)
 {
     if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	SQLiteResult *result;
@@ -146,7 +146,7 @@ static cell AMX_NATIVE_CALL n_num_rows(AMX* amx, cell* params)
 }
 
 // native sqlite_next_row(SQLiteResult:result)
-static cell AMX_NATIVE_CALL n_next_row(AMX* amx, cell* params)
+static cell AMX_NATIVE_CALL ___next_row(AMX* amx, cell* params)
 {
     if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	SQLiteResult *result;
@@ -164,7 +164,7 @@ static cell AMX_NATIVE_CALL n_next_row(AMX* amx, cell* params)
 }
 
 // native sqlite_num_fields(SQLiteResult:result)
-static cell AMX_NATIVE_CALL n_num_fields(AMX* amx, cell* params)
+static cell AMX_NATIVE_CALL ___num_fields(AMX* amx, cell* params)
 {
     if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 	SQLiteResult *result;
@@ -175,7 +175,7 @@ static cell AMX_NATIVE_CALL n_num_fields(AMX* amx, cell* params)
 }
 
 // native sqlite_field_name(SQLiteResult:result, field, fieldname[], maxlength = sizeof fieldname );
-static cell AMX_NATIVE_CALL n_field_name(AMX* amx, cell* params)
+static cell AMX_NATIVE_CALL ___field_name(AMX* amx, cell* params)
 {
     if (CheckNumberOfArguments(amx, params, 4) == false) return 0;
 	SQLiteResult *result;
@@ -197,7 +197,7 @@ static cell AMX_NATIVE_CALL n_field_name(AMX* amx, cell* params)
 }
 
 // native sqlite_get_field(SQLiteResult:result, field, fieldvalue[], maxlength = sizeof fieldvalue );
-static cell AMX_NATIVE_CALL n_get_field(AMX* amx, cell* params)
+static cell AMX_NATIVE_CALL ___get_field(AMX* amx, cell* params)
 {
     if (CheckNumberOfArguments(amx, params, 4) == false) return 0;
 	SQLiteResult *result;
@@ -219,7 +219,7 @@ static cell AMX_NATIVE_CALL n_get_field(AMX* amx, cell* params)
 }
 
 // native sqlite_get_field_assoc(SQLiteResult:result, const field[], fieldvalue[], maxlength = sizeof fieldvalue );
-static cell AMX_NATIVE_CALL n_get_field_assoc(AMX* amx, cell* params)
+static cell AMX_NATIVE_CALL ___get_field_assoc(AMX* amx, cell* params)
 {
     if (CheckNumberOfArguments(amx, params, 4) == false) return 0;
 	SQLiteResult *result;
@@ -266,21 +266,18 @@ static cell AMX_NATIVE_CALL n_get_field_assoc(AMX* amx, cell* params)
  native db_get_field_assoc(DBResult:result, const field[], result[], maxlength);
 */
 
-#if defined __cplusplus
-  extern "C"
-#endif
-AMX_NATIVE_INFO sampDb_Natives[] = {
-  { "db_open",			n_open },
-  { "db_close",			n_close },
-  { "db_query",			n_query },
-  { "db_free_result",	n_free_result },
-  { "db_num_rows",		n_num_rows },
-  { "db_next_row",      n_next_row },
-  { "db_num_fields",    n_num_fields },
-  { "db_field_name",    n_field_name },
-  { "db_get_field",		n_get_field },
-  { "db_get_field_assoc", n_get_field_assoc },
-  { NULL, NULL }        /* terminator */
+extern "C" const AMX_NATIVE_INFO sampDb_Natives[] = {
+  { "db_open",			___open },
+  { "db_close",			___close },
+  { "db_query",			___query },
+  { "db_free_result",	___free_result },
+  { "db_num_rows",		___num_rows },
+  { "db_next_row",      ___next_row },
+  { "db_num_fields",    ___num_fields },
+  { "db_field_name",    ___field_name },
+  { "db_get_field",		___get_field },
+  { "db_get_field_assoc", ___get_field_assoc },
+  { NULL, NULL }
 };
 
 int AMXEXPORT amx_sampDbInit(AMX *amx)
