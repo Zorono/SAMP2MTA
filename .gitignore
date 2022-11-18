@@ -1,39 +1,39 @@
 build/**
 
-module/src/.___TMP
+.___TMP
 **/*~
 # CMake && Make...
-module/src/**/cmake_install.cmake
-module/src/**/CMakeFiles/**
-module/src/**/CMakeCache.txt
-module/src/Makefile
+**/cmake_install.cmake
+**/CMakeFiles/**
+**/CMakeCache.txt
+Makefile
 
 # Prerequisites
-module/src/**/*.d
+**/*.d
 
 # Compiled Object files
-module/src/**/*.slo
-module/src/**/*.lo
-module/src/**/*.o
-module/src/**/*.obj
+**/*.slo
+**/*.lo
+**/*.o
+**/*.obj
 
 # Precompiled Headers
-module/src/**/*.gch
-module/src/**/*.pch
+**/*.gch
+**/*.pch
 
 # Compiled Dynamic libraries
-module/src/**/*.so
-module/src/**/*.dylib
-module/src/**/*.dll
+**/*.so
+**/*.dylib
+**/*.dll
 
 # Compiled Static libraries
-module/src/**/*.lai
-module/src/**/*.la
-module/src/**/*.a
-module/src/**/*.lib
+**/*.lai
+**/*.la
+**/*.a
+**/*.lib
 
 # Debug Symbols
-module/src/**/*.pdb
+**/*.pdb
 
 # Memory dump
 **/*.dmp
