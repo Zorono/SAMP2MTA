@@ -6,9 +6,9 @@ include(CheckIncludeFiles)
 # Settings                                                                     #
 #==============================================================================#
 set(MODULE_NAME "SAMP2MTA")
-set(MODULE_VERSION_MAJOR 0)
-set(MODULE_VERSION_MINOR 0)
-set(MODULE_VERSION_BUILD 1)
+set(MODULE_VERSION_MAJOR 1)
+set(MODULE_VERSION_MINOR 1)
+set(MODULE_VERSION_BUILD 0)
 
 set(MODULE_LINK_DEPENDENCIES "")
 set(MODULE_COMPILE_DEFINITIONS "")
@@ -23,6 +23,8 @@ set(REQUIRED_INCLUDE_FILES
 	"inttypes.h"
 	"stdint.h"
 	"alloca.h"
+    "stdio.h"
+    "string.h"
 )
 foreach(INCLUDE_FILE ${REQUIRED_INCLUDE_FILES})
 	string(REGEX REPLACE "\\.|/" "_" DEFINITION_NAME "HAVE_${INCLUDE_FILE}")
