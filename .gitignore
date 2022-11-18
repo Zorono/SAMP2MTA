@@ -37,3 +37,6 @@ module/src/**/*.pdb
 
 # Memory dump
 **/*.dmp
+
+# Executables
+**/*.exe
