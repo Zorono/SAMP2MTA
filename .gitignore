@@ -1,39 +1,39 @@
 build/**
 
-amx-deps/src/.___TMP
+module/src/.___TMP
 **/*~
 # CMake && Make...
-amx-deps/src/**/cmake_install.cmake
-amx-deps/src/**/CMakeFiles/**
-amx-deps/src/**/CMakeCache.txt
-amx-deps/src/Makefile
+module/src/**/cmake_install.cmake
+module/src/**/CMakeFiles/**
+module/src/**/CMakeCache.txt
+module/src/Makefile
 
 # Prerequisites
-amx-deps/src/**/*.d
+module/src/**/*.d
 
 # Compiled Object files
-amx-deps/src/**/*.slo
-amx-deps/src/**/*.lo
-amx-deps/src/**/*.o
-amx-deps/src/**/*.obj
+module/src/**/*.slo
+module/src/**/*.lo
+module/src/**/*.o
+module/src/**/*.obj
 
 # Precompiled Headers
-amx-deps/src/**/*.gch
-amx-deps/src/**/*.pch
+module/src/**/*.gch
+module/src/**/*.pch
 
 # Compiled Dynamic libraries
-amx-deps/src/**/*.so
-amx-deps/src/**/*.dylib
-amx-deps/src/**/*.dll
+module/src/**/*.so
+module/src/**/*.dylib
+module/src/**/*.dll
 
 # Compiled Static libraries
-amx-deps/src/**/*.lai
-amx-deps/src/**/*.la
-amx-deps/src/**/*.a
-amx-deps/src/**/*.lib
+module/src/**/*.lai
+module/src/**/*.la
+module/src/**/*.a
+module/src/**/*.lib
 
 # Debug Symbols
-amx-deps/src/**/*.pdb
+module/src/**/*.pdb
 
 # Memory dump
 **/*.dmp
