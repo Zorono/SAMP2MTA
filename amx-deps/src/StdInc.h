@@ -4,10 +4,9 @@
 
 // Disable Visual Studio warnings
 #if defined(_WIN32) || defined(WIN32) || defined(__WIN32__) || defined(_WIN64)
-#   pragma warning(disable: 4267) // DISABLE: conversion from 'size_t' to 'int', possible loss of data
-#   pragma warning(disable: 4996) // DISABLE: 'strcpy': This function or variable may be unsafe.
+    #pragma warning(disable: 4267) // DISABLE: conversion from 'size_t' to 'int', possible loss of data
+    #pragma warning(disable: 4996) // DISABLE: 'strcpy': This function or variable may be unsafe.
 #endif
-
 
 #if defined(_WIN32) || defined(WIN32) || defined(__WIN32__) || defined(_WIN64)
     #define WIN32_LEAN_AND_MEAN
@@ -25,7 +24,6 @@
 #include <string>
 #include <vector>
 #include <variant>
-#include <cstdlib>
 
 #include "Common.h"
 #include "lua/ILuaModuleManager.h"

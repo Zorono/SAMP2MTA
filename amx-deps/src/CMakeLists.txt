@@ -38,11 +38,71 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(MODULE_SRC
-	"${CMAKE_SOURCE_DIR}/ml_base.cpp"
-	"${CMAKE_SOURCE_DIR}/CFunctions.cpp"
-	"${CMAKE_SOURCE_DIR}/util.cpp"
+    "${CMAKE_SOURCE_DIR}/StdInc.cpp"
+    "${CMAKE_SOURCE_DIR}/amx/amxargs.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxaux.c"
+    "${CMAKE_SOURCE_DIR}/amx/amx.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxcons.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxcore.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxdbg.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxdgram.c"
+    "${CMAKE_SOURCE_DIR}/amx/amx_exec.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxexec_gcc.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxfile.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxfixed.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxfloat.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxgc.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxpool.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxprocess.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxstring.c"
+    "${CMAKE_SOURCE_DIR}/amx/amxtime.c"
+    "${CMAKE_SOURCE_DIR}/amx/amx_verifier.c"
+    "${CMAKE_SOURCE_DIR}/amx/dllmain.c"
+    "${CMAKE_SOURCE_DIR}/amx/fixed.c"
+    "${CMAKE_SOURCE_DIR}/amx/float.c"
+    "${CMAKE_SOURCE_DIR}/amx/fpattern.c"
+    "${CMAKE_SOURCE_DIR}/amx/keeloq.c"
+    "${CMAKE_SOURCE_DIR}/amx/minIni.c"
+    "${CMAKE_SOURCE_DIR}/amx/pawndbg.c"
+    "${CMAKE_SOURCE_DIR}/amx/pawnrun.c"
+    "${CMAKE_SOURCE_DIR}/amx/term_ga.c"
+    "${CMAKE_SOURCE_DIR}/amx/termwin.c"
+    "${CMAKE_SOURCE_DIR}/lua/lapi.c"
+    "${CMAKE_SOURCE_DIR}/lua/lauxlib.c"
+    "${CMAKE_SOURCE_DIR}/lua/lbaselib.c"
+    "${CMAKE_SOURCE_DIR}/lua/lcode.c"
+    "${CMAKE_SOURCE_DIR}/lua/ldblib.c"
+    "${CMAKE_SOURCE_DIR}/lua/ldebug.c"
+    "${CMAKE_SOURCE_DIR}/lua/ldo.c"
+    "${CMAKE_SOURCE_DIR}/lua/ldump.c"
+    "${CMAKE_SOURCE_DIR}/lua/lfunc.c"
+    "${CMAKE_SOURCE_DIR}/lua/lgc.c"
+    "${CMAKE_SOURCE_DIR}/lua/linit.c"
+    "${CMAKE_SOURCE_DIR}/lua/liolib.c"
+    "${CMAKE_SOURCE_DIR}/lua/llex.c"
+    "${CMAKE_SOURCE_DIR}/lua/lmathlib.c"
+    "${CMAKE_SOURCE_DIR}/lua/lmem.c"
+    "${CMAKE_SOURCE_DIR}/lua/loadlib.c"
+    "${CMAKE_SOURCE_DIR}/lua/lobject.c"
+    "${CMAKE_SOURCE_DIR}/lua/lopcodes.c"
+    "${CMAKE_SOURCE_DIR}/lua/loslib.c"
+    "${CMAKE_SOURCE_DIR}/lua/lparser.c"
+    "${CMAKE_SOURCE_DIR}/lua/lstate.c"
+    "${CMAKE_SOURCE_DIR}/lua/lstring.c"
+    "${CMAKE_SOURCE_DIR}/lua/lstrlib.c"
+    "${CMAKE_SOURCE_DIR}/lua/ltable.c"
+    "${CMAKE_SOURCE_DIR}/lua/ltablib.c"
+    "${CMAKE_SOURCE_DIR}/lua/ltm.c"
+    "${CMAKE_SOURCE_DIR}/lua/lundump.c"
+    "${CMAKE_SOURCE_DIR}/lua/lutf8lib.c"
+    "${CMAKE_SOURCE_DIR}/lua/lvm.c"
+    "${CMAKE_SOURCE_DIR}/lua/lzio.c"
+    "${CMAKE_SOURCE_DIR}/lua/print.c"
     "${CMAKE_SOURCE_DIR}/sha256/sha256.cpp"
     "${CMAKE_SOURCE_DIR}/sqlite/sqlite3.c"
+    "${CMAKE_SOURCE_DIR}/util.cpp"
+	"${CMAKE_SOURCE_DIR}/ml_base.cpp"
+	"${CMAKE_SOURCE_DIR}/CFunctions.cpp"
 )
 if(UNIX)
 	set(MODULE_COMPILE_DEFINITIONS ${MODULE_COMPILE_DEFINITIONS} "LINUX")
@@ -64,6 +124,7 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
     endif()
 
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -MD")
 endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-noexcept-type -pthread -lrt")
@@ -77,6 +138,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ignored-attributes")
   endif()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -MD")
 endif()
 
 # Print CXX compiler information

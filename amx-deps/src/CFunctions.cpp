@@ -64,14 +64,14 @@ vector<ProcessTick_t*> vecPfnProcessTick;
 AMX *suspendedAMX = NULL;
 
 // amxLoadPlugin(pluginName)
-bool CFunctions::amxLoadPlugin(lua_State *luaVM) {
+int CFunctions::amxLoadPlugin(lua_State *luaVM) {
 	if(!luaVM) return;
 	static const char *requiredExports[] = { "Load", "Unload", "Supports", 0 };
 
 	const char *pluginName = luaL_checkstring(luaVM, 1);
 	if(!pluginName || loadedPlugins.find(pluginName) != loadedPlugins.end() || !isSafePath(pluginName)) {
 		lua_pushboolean(luaVM, 0);
-		return false;
+		return 0;
 	}
 
 	std::string pluginPath = std::format("{}/resources/plugins/", RESOURCE_PATH);
@@ -88,7 +88,7 @@ bool CFunctions::amxLoadPlugin(lua_State *luaVM) {
 
 	if(hPlugin == NULL) {
 		lua_pushboolean(luaVM, 0);
-		return false;
+		return 0;
 	}
 
 	bool hasAllReqFns = true;
@@ -101,7 +101,7 @@ bool CFunctions::amxLoadPlugin(lua_State *luaVM) {
 	if(!hasAllReqFns) {
 		freeLib(hPlugin);
 		lua_pushboolean(luaVM, 0);
-		return false;
+		return 0;
 	}
 
 	printf("  Loading plugin: %s\n", pluginName);
@@ -113,7 +113,7 @@ bool CFunctions::amxLoadPlugin(lua_State *luaVM) {
 		print("  Plugin does not conform to architecture.");
 		freeLib(hPlugin);
 		lua_pushboolean(luaVM, 0);
-		return false;
+		return 0;
 	}
 
 	SampPlugin* pSampPlugin = new SampPlugin;
@@ -126,7 +126,7 @@ bool CFunctions::amxLoadPlugin(lua_State *luaVM) {
 		printf("  Unsupported version - This plugin requires version %x.", (pSampPlugin->dwSupportFlags & SUPPORTS_VERSION_MASK));
 		freeLib(pSampPlugin->pPluginPointer);
 		lua_pushboolean(luaVM, 0);
-		return false;
+		return 0;
 	}
 
 	if ((pSampPlugin->dwSupportFlags & SUPPORTS_AMX_NATIVES) != 0)
@@ -147,14 +147,14 @@ bool CFunctions::amxLoadPlugin(lua_State *luaVM) {
 	if(!pfnLoad(pluginInitData)) {
 		freeLib(pSampPlugin->pPluginPointer);
 		lua_pushboolean(luaVM, 0);
-		return false;
+		return 0;
 	}
 
 	loadedPlugins[pluginName] = pSampPlugin;
 	printf("  Loaded.");
 
 	lua_pushboolean(luaVM, 1);
-	return true;
+	return 1;
 }
 
 // amxIsPluginLoaded(pluginName)
@@ -417,13 +417,13 @@ int CFunctions::amxWriteString(lua_State *luaVM) {
 }
 
 // amxUnload(amxptr)
-bool CFunctions::amxUnload(lua_State *luaVM) {
+int CFunctions::amxUnload(lua_State *luaVM) {
 	if(!luaVM) return;
 	AMX *amx = (AMX *)lua_touserdata(luaVM, 1);
 	if(!amx) {
 		pModuleManager->ErrorPrintf("invalid AMX parameter -> Unload\n");
 		lua_pushboolean(luaVM, 0);
-		return false;
+		return 0;
 	}
 	// Call all plugins' AmxUnload function
 	for (const auto& plugin : loadedPlugins) {
@@ -450,7 +450,7 @@ bool CFunctions::amxUnload(lua_State *luaVM) {
 	loadedAMXs.erase(amx);
 	delete amx;
 	lua_pushboolean(luaVM, 1);
-	return true;
+	return 1;
 }
 
 // amxUnloadAllPlugins()
@@ -643,12 +643,12 @@ int CFunctions::float2cell(lua_State *luaVM) {
 }
 
 // ServerOS()
-bool CFunctions::ServerOS(lua_State *luaVM) {
+int CFunctions::ServerOS(lua_State *luaVM) {
 	if(!luaVM) return;
 	#if defined(_WIN32) || defined(WIN32) || defined(__WIN32__) || defined(_WIN64)
         lua_pushnumber(luaVM, 0);
 	#elif defined(LINUX) || defined(FREEBSD) || defined(__FreeBSD__) || defined(__OpenBSD__)
 		lua_pushnumber(luaVM, 1);
 	#endif
-	return true;
+	return 1;
 }
