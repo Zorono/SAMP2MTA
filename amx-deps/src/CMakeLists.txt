@@ -67,6 +67,8 @@ set(MODULE_SRC
     "${CMAKE_SOURCE_DIR}/amx/pawnrun.c"
     "${CMAKE_SOURCE_DIR}/amx/term_ga.c"
     "${CMAKE_SOURCE_DIR}/amx/termwin.c"
+    "${CMAKE_SOURCE_DIR}/linux/binreloc.c"
+    "${CMAKE_SOURCE_DIR}/linux/getch.c"
     "${CMAKE_SOURCE_DIR}/lua/lapi.c"
     "${CMAKE_SOURCE_DIR}/lua/lauxlib.c"
     "${CMAKE_SOURCE_DIR}/lua/lbaselib.c"
