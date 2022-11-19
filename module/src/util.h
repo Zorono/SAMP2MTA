@@ -1,6 +1,11 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include "StdInc.h"
+#include "UTF8.h"
+#include <cstdlib>
+#include <filesystem>
+
 // Cross compatibility
 #if defined(_WIN32) || defined(WIN32) || defined(__WIN32__) || defined(_WIN64)
 
@@ -27,6 +32,11 @@
 #endif
 
 void *(*logprintf)(const char *fmt, ...);
+
+using namespace std;
+namespace fs = std::filesystem;
+
+extern map < AMX *, AMXPROPS > loadedAMXs;
 
 // Util functions
 int setenv_portable(const char* name, const char* value, int overwrite);

@@ -21,6 +21,9 @@
 #include <string>
 #include <vector>
 #include <variant>
+#include <cstdlib>
+#include <filesystem>
+#include <malloc.h>
 
 #include "Common.h"
 #include "lua/ILuaModuleManager.h"

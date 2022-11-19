@@ -10,7 +10,7 @@ set(MODULE_VERSION_MAJOR 1)
 set(MODULE_VERSION_MINOR 1)
 set(MODULE_VERSION_BUILD 0)
 
-set(MODULE_LINK_DEPENDENCIES "")
+set(MODULE_LINK_DEPENDENCIES "pthread stdc++ lua5.1 sqlite3 stdc++fs")
 set(MODULE_COMPILE_DEFINITIONS "")
 #==============================================================================#
 project(${MODULE_NAME}
@@ -130,10 +130,9 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
     endif()
 
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2 -MD")
 endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-noexcept-type -pthread -lrt")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-noexcept-type -pthread -lrt -lstdc++fs")
   if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
   endif()
@@ -144,7 +143,26 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-ignored-attributes")
   endif()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -MD")
+endif()
+
+if (NOT CMAKE_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD 14)
+elseif (CMAKE_CXX_STANDARD LESS 14)
+    message(WARNING "CMAKE_CXX_STANDARD has been set to '${CMAKE_CXX_STANDARD}' which is lower than the minimum required standard (c++14).")
+endif ()
+
+add_library(${MODULE_NAME_LOWERCASE} SHARED ${MODULE_SRC})
+target_include_directories(${MODULE_NAME_LOWERCASE} PRIVATE linux amx lua sha256 sqlite)
+target_link_libraries(${MODULE_NAME_LOWERCASE} PRIVATE ${MODULE_LINK_DEPENDENCIES})
+set_property(TARGET ${MODULE_NAME_LOWERCASE} APPEND_STRING PROPERTY "COMPILE_DEFINITIONS" ${MODULE_COMPILE_DEFINITIONS})
+set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY PREFIX "")
+set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY CXX_STANDARD_REQUIRED ON)
+set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY COMPILE_FLAGS "-O2 -MD")
+
+if(MINGW)
+	set_property(TARGET ${MODULE_NAME_LOWERCASE}
+		APPEND_STRING PROPERTY LINK_FLAGS "-Wl,-k"
+	)
 endif()
 
 # Print CXX compiler information
@@ -169,26 +187,6 @@ else (NOT MSVC)
     endif ()
 endif ()
 
-if (NOT CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 14)
-elseif (CMAKE_CXX_STANDARD LESS 14)
-    message(WARNING "CMAKE_CXX_STANDARD has been set to '${CMAKE_CXX_STANDARD}' which is lower than the minimum required standard (c++14).")
-endif ()
-
-message(STATUS "Using c++ standard c++${CMAKE_CXX_STANDARD}")
+message (STATUS "Using c++ standard c++${CMAKE_CXX_STANDARD}")
 message (STATUS "CMake version: ${CMAKE_VERSION}")
 message (STATUS "Module version: ${PROJECT_VERSION}")
-
-add_library(${MODULE_NAME_LOWERCASE} SHARED ${MODULE_SRC})
-target_include_directories(${MODULE_NAME_LOWERCASE} PRIVATE linux amx lua sha256 sqlite)
-target_link_libraries(${MODULE_NAME_LOWERCASE} ${MODULE_LINK_DEPENDENCIES})
-set_property(TARGET ${MODULE_NAME_LOWERCASE} APPEND_STRING PROPERTY "COMPILE_DEFINITIONS" ${MODULE_COMPILE_DEFINITIONS})
-set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY PREFIX "")
-set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY CXX_STANDARD 14)
-set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY CXX_STANDARD_REQUIRED ON)
-
-if(MINGW)
-	set_property(TARGET ${MODULE_NAME_LOWERCASE}
-		APPEND_STRING PROPERTY LINK_FLAGS "-Wl,-k"
-	)
-endif()

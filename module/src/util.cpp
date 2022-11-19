@@ -1,13 +1,3 @@
-#include "StdInc.h"
-#include "UTF8.h"
-#include <cstdlib>
-#include <filesystem>
-
-using namespace std;
-namespace fs = std::filesystem;
-
-extern map < AMX *, AMXPROPS > loadedAMXs;
-
 int setenv_portable(const char* name, const char* value, int overwrite) {
 #if defined(_WIN32) || defined(WIN32) || defined(__WIN32__) || defined(_WIN64)
 	if (!overwrite) {
