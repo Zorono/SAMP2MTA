@@ -208,44 +208,6 @@ vector<AMX *> getResourceAMXs(lua_State *luaVM) {
 	return amxs;
 }
 
-string getScriptFilePath(AMX *amx, const char *filename) {
-	if(!isSafePath(filename) || loadedAMXs.find(amx) == loadedAMXs.end())
-		return string();
-
-	// First check if it exists in the resource folder
-	fs::path respath = loadedAMXs[amx].filePath;
-	respath = respath.remove_filename() / filename;
-	if(exists(respath))
-		return respath.string();
-
-	// Then check if it exists in the main scriptfiles folder
-	fs::path scriptfilespath = fs::path(std::format("{}/resources/scriptfiles", RESOURCE_PATH)) / filename;
-	if(exists(scriptfilespath))
-	{
-		return scriptfilespath.string();
-	}
-
-	// Otherwise default to amx's resource folder - make sure the folder
-	// where the file is expected exists
-	fs::path folder = respath;
-	folder.remove_filename();
-	create_directories(folder);
-	return respath.string();
-}
-
-extern "C" char* getScriptFilePath(AMX *amx, char *dest, const char *filename, size_t destsize) {
-	if(!isSafePath(filename))
-		return 0;
-
-	string path = getScriptFilePath(amx, filename);
-	if(!path.empty() && path.size() < destsize) {
-		strcpy(dest, path.c_str());
-		return dest;
-	} else {
-		return 0;
-	}
-}
-
 bool isSafePath(const char *path) {
 	return path && !strstr(path, "..") && !strchr(path, ':') && !strchr(path, '|') && path[0] != '\\' && path[0] != '/';
 }
