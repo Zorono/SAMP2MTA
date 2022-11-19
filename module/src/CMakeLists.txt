@@ -10,7 +10,11 @@ set(MODULE_VERSION_MAJOR 1)
 set(MODULE_VERSION_MINOR 1)
 set(MODULE_VERSION_BUILD 0)
 
-set(MODULE_LINK_DEPENDENCIES "pthread stdc++ lua5.1 sqlite3 stdc++fs")
+set(MODULE_LINK_DEPENDENCIES "pthread"
+                             "stdc++"
+                             "lua5.1"
+                             "sqlite3"
+                             "stdc++fs")
 set(MODULE_COMPILE_DEFINITIONS "")
 #==============================================================================#
 project(${MODULE_NAME}
@@ -157,7 +161,6 @@ target_link_libraries(${MODULE_NAME_LOWERCASE} PRIVATE ${MODULE_LINK_DEPENDENCIE
 set_property(TARGET ${MODULE_NAME_LOWERCASE} APPEND_STRING PROPERTY "COMPILE_DEFINITIONS" ${MODULE_COMPILE_DEFINITIONS})
 set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY PREFIX "")
 set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY CXX_STANDARD_REQUIRED ON)
-set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY COMPILE_FLAGS "-O2 -MD")
 
 if(MINGW)
 	set_property(TARGET ${MODULE_NAME_LOWERCASE}
