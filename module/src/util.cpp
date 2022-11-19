@@ -388,16 +388,16 @@ char *GetCurrentNativeFunctionName(AMX *amx) // http://pro-pawn.ru/showthread.ph
 		}
 
 	ret:
-		static const char str_unknown[] = "(unknown)";
+		static char str_unknown[] = "(unknown)";
 		if (NULL == func)
 			return str_unknown;
     #if CUR_FILE_VERSION < 11
 		if (hdr->defsize == (int16_t)sizeof(AMX_FUNCSTUB))
-			return (const char *)func->name;
-		return (const char *)
+			return (char *)func->name;
+		return (char *)
 			((size_t)hdr + (size_t)((AMX_FUNCSTUBNT *)func)->nameofs);
     #else
-		return (const char *)((size_t)hdr + (size_t)func->nameofs);
+		return (char *)((size_t)hdr + (size_t)func->nameofs);
     #endif
 }
 

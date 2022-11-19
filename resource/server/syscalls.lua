@@ -246,7 +246,6 @@ g_SAMPSyscallPrototypes = {
 
 	ForceClassSelection = {'i'},
 
-	GameModeExit = {},
 	GameTextForAll = {'s', 'i', 'i'},
 	GameTextForPlayer = {'p', 's', 'i', 'i'},
 	GangZoneCreate = {'f', 'f', 'f', 'f'},

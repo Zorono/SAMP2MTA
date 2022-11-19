@@ -1,5 +1,4 @@
-#include "../amx/amx.h"
-#include "../sha256/sha256.h"
+#include "misc.h"
 
 // native SHA256_PassHash(password[], salt[], ret_hash[], ret_hash_len);
 static cell AMX_NATIVE_CALL ___SHA256_PassHash(AMX *amx, cell *params)

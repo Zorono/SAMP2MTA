@@ -367,14 +367,6 @@ function ShowPlayerMarkers(amx, show)
 	end
 end
 
-function GameModeExit(amx)
-	if getResourceState(getResourceFromName('mapcycler')) == 'running' then
-		triggerEvent('onRoundFinished', getResourceRootElement(getThisResource()))
-	else
-		exports.votemanager:voteMap(getThisResource())
-	end
-end
-
 function SetWorldTime(amx, hours)
 	setTime(hours, 0)
 end

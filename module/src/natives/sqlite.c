@@ -1,21 +1,4 @@
-#include <stdio.h>
-#include <malloc.h>
-#include <string.h>
-
-#include "../amx/amx.h"
-#include "../sqlite/sqlite3.h"
-
-//--------------------------------------------------------------------------------------
-
-typedef struct _SQLiteResult
-{
-	int nRows;
-	int nColumns;
-	char **pResults;
-	char *szErrMsg;
-	int nCurrentRow;
-
-} SQLiteResult;
+#include "./sqlite.h"
 
 //--------------------------------------------------------------------------------------
 

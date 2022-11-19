@@ -1,14 +1,11 @@
 #ifndef _STDINC_H
 #define _STDINC_H
 
-
-// Disable Visual Studio warnings
 #if defined(_WIN32) || defined(WIN32) || defined(__WIN32__) || defined(_WIN64)
+    // Disable Visual Studio warnings
     #pragma warning(disable: 4267) // DISABLE: conversion from 'size_t' to 'int', possible loss of data
     #pragma warning(disable: 4996) // DISABLE: 'strcpy': This function or variable may be unsafe.
-#endif
 
-#if defined(_WIN32) || defined(WIN32) || defined(__WIN32__) || defined(_WIN64)
     #define WIN32_LEAN_AND_MEAN
 	#include <windows.h>
 #elif defined(LINUX) || defined(FREEBSD) || defined(__FreeBSD__) || defined(__OpenBSD__)
@@ -60,14 +57,10 @@ extern "C"
 
 extern "C"
 {
-	#include "natives/sqlite.c"
-	int AMXEXPORT amx_sampDbInit(AMX *amx);
-	int AMXEXPORT amx_sampDbCleanup(AMX *amx);
-
-    #include "natives/misc.c"
-	int AMXEXPORT amx_sampMiscInit(AMX *amx);
-	int AMXEXPORT amx_sampMiscCleanup(AMX *amx);
-}
+	#include "natives/sqlite.h"
+    #include "natives/misc.h"
+    #include "natives/servervars.h"
+};
 
 #include "CFunctions.h"
 
