@@ -75,8 +75,6 @@ set(MODULE_SRC
     "${CMAKE_SOURCE_DIR}/amx/pawnrun.c"
     "${CMAKE_SOURCE_DIR}/amx/term_ga.c"
     "${CMAKE_SOURCE_DIR}/amx/termwin.c"
-    "${CMAKE_SOURCE_DIR}/linux/binreloc.c"
-    "${CMAKE_SOURCE_DIR}/linux/getch.c"
     "${CMAKE_SOURCE_DIR}/lua/lapi.c"
     "${CMAKE_SOURCE_DIR}/lua/lauxlib.c"
     "${CMAKE_SOURCE_DIR}/lua/lbaselib.c"
@@ -115,6 +113,13 @@ set(MODULE_SRC
 	"${CMAKE_SOURCE_DIR}/CFunctions.cpp"
 )
 if(UNIX)
+    set(MODULE_SRC
+        ${MODULE_SRC}
+        "${CMAKE_SOURCE_DIR}/linux/binreloc.c"
+        "${CMAKE_SOURCE_DIR}/linux/getch.c"
+    )
+    add_definitions(-DLINUX -DENABLE_BINRELOC -g)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/linux)
 	set(MODULE_COMPILE_DEFINITIONS ${MODULE_COMPILE_DEFINITIONS} "LINUX")
 endif()
 if(MINGW)
@@ -156,17 +161,25 @@ elseif (CMAKE_CXX_STANDARD LESS 14)
 endif ()
 
 add_library(${MODULE_NAME_LOWERCASE} SHARED ${MODULE_SRC})
-target_include_directories(${MODULE_NAME_LOWERCASE} PRIVATE linux amx lua sha256 sqlite)
-target_link_libraries(${MODULE_NAME_LOWERCASE} PRIVATE ${MODULE_LINK_DEPENDENCIES})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/amx ${CMAKE_CURRENT_SOURCE_DIR}/lua ${CMAKE_CURRENT_SOURCE_DIR}/sha256 ${CMAKE_CURRENT_SOURCE_DIR}/sqlite)
+foreach(LINK_DEPENDENCY ${MODULE_LINK_DEPENDENCIES})
+    link_libraries(${LINK_DEPENDENCY})
+endforeach()
 set_property(TARGET ${MODULE_NAME_LOWERCASE} APPEND_STRING PROPERTY "COMPILE_DEFINITIONS" ${MODULE_COMPILE_DEFINITIONS})
 set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY PREFIX "")
 set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY CXX_STANDARD_REQUIRED ON)
 
 if(MINGW)
 	set_property(TARGET ${MODULE_NAME_LOWERCASE}
-		APPEND_STRING PROPERTY LINK_FLAGS "-Wl,-k"
+		APPEND_STRING PROPERTY LINK_FLAGS "-Wl,-k,--enable-stdcall-fixup"
 	)
 endif()
+
+set(CPACK_PACKAGE_NAME "${MODULE_NAME_LOWERCASE}")
+set(CPACK_PACKAGE_VERSION_MAJOR ${MODULE_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${MODULE_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${MODULE_VERSION_BUILD})
+include(CPack)
 
 # Print CXX compiler information
 message (STATUS "CMAKE_CXX_COMPILER '${CMAKE_CXX_COMPILER}' '${CMAKE_CXX_COMPILER_ID}' '${CMAKE_CXX_COMPILER_VERSION}'")
