@@ -225,6 +225,13 @@ int set_amxstring(AMX *amx,cell amx_addr,const char *source,int max)
   return physaddr-start;
 }
 
+char* amx_FormatString(AMX* amx, cell* params, int32_t parm)
+{
+    static char outbuf[4096];
+	atcprintf(outbuf, sizeof(outbuf) - 1, get_amxaddr(amx, params[parm++]), amx, params, &parm);
+    return outbuf;
+}
+
 char *GetCurrentNativeFunctionName(AMX *amx) // http://pro-pawn.ru/showthread.php?14522
 {
     #if (6 <= CUR_FILE_VERSION) && (CUR_FILE_VERSION <= 8)

@@ -5,6 +5,7 @@
 #include "UTF8.h"
 #include <cstdlib>
 #include <filesystem>
+#include <map>
 
 // Cross compatibility
 #if defined(_WIN32) || defined(WIN32) || defined(__WIN32__) || defined(_WIN64)
@@ -36,7 +37,7 @@ void *(*logprintf)(const char *fmt, ...);
 using namespace std;
 namespace fs = std::filesystem;
 
-extern map < AMX *, AMXPROPS > loadedAMXs;
+extern std::map<AMX*,AMXPROPS> loadedAMXs;
 
 // Util functions
 int setenv_portable(const char* name, const char* value, int overwrite);

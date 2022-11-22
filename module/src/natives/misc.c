@@ -14,8 +14,30 @@ static cell AMX_NATIVE_CALL ___SHA256_PassHash(AMX *amx, cell *params)
 	return set_amxstring(amx, params[3], szResult, params[4]);
 }
 
+// native print(const string[])
+static cell AMX_NATIVE_CALL ___print(AMX* amx, cell* params)
+{
+	if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
+
+	char* msg;
+	amx_StrParam(amx, params[1], msg);
+	logprintf(msg);
+	return 0;
+}
+
+// native printf(const format[], {Float,_}:...)
+static cell AMX_NATIVE_CALL ___printf(AMX *amx, cell *params)
+{
+	if (CheckNumberOfArguments(amx, params, 1, true) == false) return 0;
+
+	logprintf(amx_FormatString(amx, params, 1));
+	return 0;
+}
+
 extern "C" const AMX_NATIVE_INFO sampMisc_Natives[] = {
   { "SHA256_PassHash",  ___SHA256_PassHash },
+  { "print",  ___print },
+  { "printf",  ___printf },
   { NULL, NULL }
 };
 

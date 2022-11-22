@@ -61,8 +61,6 @@ function loadAMX(fileName, isGamemode)
 	amx.natives = readPrefixTable(hAMX, amx.natives, amx.libraries - amx.natives, false)
 	amx.libraries = nil
 
-	fileClose(hAMX)
-
 	local alreadyGameModeRunning = getRunningGameMode() and true
 	local alreadySyncingWeapons = isWeaponSyncingNeeded()
 	if alreadyGameModeRunning and amx.type == 'gamemode' then
@@ -70,7 +68,7 @@ function loadAMX(fileName, isGamemode)
 		return false
 	end
 
-	amx.cptr = amxLoad(getResourceName(getThisResource()), amx.name .. '.amx')
+	amx.cptr = amxLoad(getResourceName(getThisResource()), amx.name .. '.amx', (amx.type == 'gamemode' and 1 or 0))
 	if amx.cptr then
 		outputDebugString('"' .. fileName .. '.amx" ' .. amx.type .. ' is loaded')
 	else
@@ -79,8 +77,13 @@ function loadAMX(fileName, isGamemode)
 	end
 
 	-- set up reading/writing of code and data section
-	amx.memCOD = setmetatable({ amx = amx.cptr }, { __index = amxMTReadCODCell })
-	amx.memDAT = setmetatable({ amx = amx.cptr }, { __index = amxMTReadDATCell, __newindex = amxMTWriteDATCell })
+    if not (amx.flags % 8) >= 4 then -- check if code isn't compacted...'
+        amx.memCOD = setmetatable({ amx = amx.cptr }, { __index = amxMTReadCODCell })
+        amx.memDAT = setmetatable({ amx = amx.cptr }, { __index = amxMTReadDATCell, __newindex = amxMTWriteDATCell })
+    else
+        --
+    end
+    fileClose(hAMX)
 
 	g_LoadedAMXs[amx.name] = amx
 
@@ -182,10 +185,31 @@ addEventHandler('onResourceStart', resourceRoot,
 		if plugins then
 			local pluginCount
 			for pluginName in plugins:split() do
-                if amxLoadPlugin(pluginName) then
-                    pluginCount = pluginCount + 1
+                local isSuppported = true
+                for i, p in ipairs({
+                    "streamer",
+                    "Pawn.CMD",
+                    "Pawn.RakNet",
+                    "FCNPC",
+                    "timerfix",
+                    "ColAndreas",
+                    "crashdetect",
+                    "nativefallback",
+                    "jit",
+                    "sampvoice"
+                }) do
+                    if p == pluginName then
+                        isSuppported = false
+                    end
+                end
+                if isSuppported == true then
+                    if amxLoadPlugin(pluginName) then
+                        pluginCount = pluginCount + 1
+                    else
+                        outputDebugString('  Failed loading plugin ' .. pluginName .. '!', 1)
+                    end
                 else
-                    outputDebugString('  Failed loading plugin ' .. pluginName .. '!', 1)
+                    outputDebugString('  Unable to load plugin ' .. pluginName .. '!', 1)
                 end
 			end
 			outputDebugString("  Loaded " .. pluginCount .. " plugins.")

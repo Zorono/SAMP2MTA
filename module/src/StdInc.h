@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef _STDINC_H
 #define _STDINC_H
 
@@ -24,11 +26,10 @@
 #include <cstdlib>
 #include <filesystem>
 #include <malloc.h>
+#include <stdlib.h>
 
 #include "Common.h"
 #include "lua/ILuaModuleManager.h"
-#include "sqlite/sqlite3.h"
-#include "sha256/sha256.h"
 
 extern "C"
 {
