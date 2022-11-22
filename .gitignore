@@ -1,11 +1,12 @@
 build/**
 
-.___TMP
+**/.___TMP
 **/*~
 # CMake && Make...
-**/cmake_install.cmake
-**/CMakeFiles/**
+**/*.cmake
+**/CMakeFiles
 **/CMakeCache.txt
+!**/CMakeLists.txt
 Makefile
 
 # Prerequisites
