@@ -200,9 +200,6 @@ int CFunctions::amxLoad(lua_State *luaVM) {
 	AMX *amx = new AMX;
 	int  err = aux_LoadProgram(amx, amxPath, NULL);
 	if(err != AMX_ERR_NONE) {
-		/*if(err == AMX_ERR_SLEEP) {
-			//
-		}*/
 		delete amx;
 		lua_pushboolean(luaVM, 0);
 		pModuleManager->ErrorPrintf("Script[%s]: Run time error %d: \"%s\"", amxName, err, aux_StrError(err));
@@ -236,7 +233,6 @@ int CFunctions::amxLoad(lua_State *luaVM) {
 				pModuleManager->ErrorPrintf("  Function not registered: '%s'\n", (char *)amx->base + func->nameofs);
 			func++;
 		}
-		aux_FreeProgram(amx);
 		amx_sampDbCleanup(amx);
 		amx_CoreCleanup(amx);
 		amx_TimeCleanup(amx);
@@ -246,6 +242,7 @@ int CFunctions::amxLoad(lua_State *luaVM) {
 		amx_ConsoleCleanup(amx);
         amx_sampMiscCleanup(amx);
         amx_sampVarsCleanup(amx);
+        aux_FreeProgram(amx);
 		delete amx;
 		lua_pushboolean(luaVM, 0);
 		return 1;
@@ -436,7 +433,6 @@ int CFunctions::amxUnload(lua_State *luaVM) {
 	}
 
 	// Unload
-	aux_FreeProgram(amx);
 	amx_sampDbCleanup(amx);
 	amx_CoreCleanup(amx);
 	amx_TimeCleanup(amx);
@@ -446,6 +442,7 @@ int CFunctions::amxUnload(lua_State *luaVM) {
 	amx_ConsoleCleanup(amx);
     amx_sampMiscCleanup(amx);
     amx_sampVarsCleanup(amx);
+    aux_FreeProgram(amx);
 
 	lua_getfield(luaVM, LUA_REGISTRYINDEX, "amx");
 	lua_pushnil(luaVM);
