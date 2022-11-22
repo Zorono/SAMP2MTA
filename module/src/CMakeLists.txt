@@ -15,7 +15,6 @@ set(MODULE_LINK_DEPENDENCIES "pthread"
                              "lua5.1"
                              "sqlite3"
                              "stdc++fs")
-set(MODULE_COMPILE_DEFINITIONS "")
 #==============================================================================#
 project(${MODULE_NAME}
 	LANGUAGES CXX
@@ -37,7 +36,7 @@ foreach(INCLUDE_FILE ${REQUIRED_INCLUDE_FILES})
 	string(TOUPPER ${DEFINITION_NAME} DEFINITION_NAME)
 	check_include_files("${INCLUDE_FILE}" ${DEFINITION_NAME})
 	if(${DEFINITION_NAME})
-		set(MODULE_COMPILE_DEFINITIONS ${MODULE_COMPILE_DEFINITIONS} "${DEFINITION_NAME}=1")
+        add_definitions(-D${DEFINITION_NAME})
 	endif()
 endforeach()
 
@@ -120,10 +119,6 @@ if(UNIX)
     )
     add_definitions(-DLINUX -DENABLE_BINRELOC -g)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/linux)
-	set(MODULE_COMPILE_DEFINITIONS ${MODULE_COMPILE_DEFINITIONS} "LINUX")
-endif()
-if(MINGW)
-	set(MODULE_COMPILE_DEFINITIONS ${MODULE_COMPILE_DEFINITIONS} "HAVE_STDINT_H=1" "__need_size_t")
 endif()
 
 # Make sure the target is 32-bit
@@ -139,9 +134,11 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
     endif()
 
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
+elseif(MSVC)
+    target_compile_definitions(${MODULE_NAME_LOWERCASE} PRIVATE _CRT_SECURE_NO_WARNINGS HAVE_STDINT_H)
 endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-noexcept-type -pthread -lrt -lstdc++fs")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wno-noexcept-type -pthread -lrt -lstdc++fs")
   if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
   endif()
@@ -165,9 +162,12 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/amx ${CMAKE_CURRENT_SOURCE_DIR}/
 foreach(LINK_DEPENDENCY ${MODULE_LINK_DEPENDENCIES})
     link_libraries(${LINK_DEPENDENCY})
 endforeach()
-set_property(TARGET ${MODULE_NAME_LOWERCASE} APPEND_STRING PROPERTY "COMPILE_DEFINITIONS" ${MODULE_COMPILE_DEFINITIONS})
 set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY PREFIX "")
 set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY CXX_STANDARD_REQUIRED ON)
+target_compile_features(${MODULE_NAME_LOWERCASE} PRIVATE cxx_std_17)
+set_property(TARGET ${MODULE_NAME_LOWERCASE} PROPERTY POSITION_INDEPENDENT_CODE Off)
+set_property(TARGET ${MODULE_NAME_LOWERCASE} APPEND_STRING PROPERTY COMPILE_FLAGS "-m32 -O3 -w")
+set_property(TARGET ${MODULE_NAME_LOWERCASE} APPEND_STRING PROPERTY LINK_FLAGS "-m32 -O3 -static-libgcc -static-libstdc++")
 
 if(MINGW)
 	set_property(TARGET ${MODULE_NAME_LOWERCASE}
