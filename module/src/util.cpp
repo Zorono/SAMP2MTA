@@ -212,14 +212,17 @@ bool isSafePath(const char *path) {
 	return path && !strstr(path, "..") && !strchr(path, ':') && !strchr(path, '|') && path[0] != '\\' && path[0] != '/';
 }
 
-extern "C" int set_amxstring(AMX *amx,cell amx_addr,const char *source,int max)
+int set_amxstring(AMX *amx,cell amx_addr,const char *source,int max)
 {
-  cell* dest = (cell *)(amx->base + (int)(((AMX_HEADER *)amx->base)->dat + amx_addr));
-  cell* start = dest;
+  cell* physaddr;
+  amx_GetAddr(amx, amx_addr, &physaddr);
+  if(!physaddr)
+    return 0;
+  cell* start = physaddr;
   while (max--&&*source)
-    *dest++=(cell)*source++;
-  *dest = 0;
-  return dest-start;
+    *physaddr++=(cell)*source++;
+  *physaddr = 0;
+  return physaddr-start;
 }
 
 char *GetCurrentNativeFunctionName(AMX *amx) // http://pro-pawn.ru/showthread.php?14522
@@ -353,11 +356,11 @@ char *GetCurrentNativeFunctionName(AMX *amx) // http://pro-pawn.ru/showthread.ph
     #endif
 }
 
-bool CheckNumberOfArguments(AMX *amx, const cell *params, int num_expected)
+bool CheckNumberOfArguments(AMX *amx, const cell *params, int num_expected, bool funcF = false)
 {
-    if ((int)params[0] != (num_expected * (int)sizeof(cell))) {
+    if ((int)params[0] < (num_expected * (int)sizeof(cell))) {
         amx_RaiseError(amx, AMX_ERR_PARAMS);
-        logprintf("%s: Incorrect number of arguments (expected %d, got %d).", GetCurrentNativeFunctionName(amx), num_expected, ((int)params[0] / (int)sizeof(cell)));
+        logprintf("%s: Incorrect number of arguments (expected %d%s, got %d).", GetCurrentNativeFunctionName(amx), num_expected, (funcF ? "+" : ""), ((int)params[0] / (int)sizeof(cell)));
         return false;
     }
     return true;

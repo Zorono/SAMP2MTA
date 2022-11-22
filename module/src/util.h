@@ -48,7 +48,8 @@ void lua_pushremotevalue(lua_State *localVM, lua_State *remoteVM, int index, boo
 void lua_pushremotevalues(lua_State *localVM, lua_State *remoteVM, int num);
 std::vector<AMX *> getResourceAMXs(lua_State *luaVM);
 bool isSafePath(const char* path);
-extern "C" int set_amxstring(AMX *amx,cell amx_addr,const char *source,int max);
+cell* get_amxaddr(AMX *amx,cell amx_addr);
+int set_amxstring(AMX *amx,cell amx_addr,const char *source,int max);
 char *GetCurrentNativeFunctionName(AMX *amx);
 bool CheckNumberOfArguments(AMX *amx, const cell *params, int num_expected);
 #endif
