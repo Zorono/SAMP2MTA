@@ -154,7 +154,7 @@ endif()
 if (NOT CMAKE_CXX_STANDARD)
     set(CMAKE_CXX_STANDARD 17)
 elseif (CMAKE_CXX_STANDARD LESS 17)
-    message(WARNING "CMAKE_CXX_STANDARD has been set to '${CMAKE_CXX_STANDARD}' which is lower than the minimum required standard (c++14).")
+    message(WARNING "CMAKE_CXX_STANDARD has been set to '${CMAKE_CXX_STANDARD}' which is lower than the minimum required standard (c++17).")
 endif ()
 
 add_library(${MODULE_NAME_LOWERCASE} SHARED ${MODULE_SRC})
