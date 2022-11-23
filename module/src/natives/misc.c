@@ -28,7 +28,7 @@ static cell AMX_NATIVE_CALL ___print(AMX* amx, cell* params)
 // native printf(const format[], {Float,_}:...)
 static cell AMX_NATIVE_CALL ___printf(AMX *amx, cell *params)
 {
-	if (CheckNumberOfArguments(amx, params, 1, true) == false) return 0;
+	if (CheckNumberOfArguments(amx, params, 1) == false) return 0;
 
 	logprintf(amx_FormatString(amx, params, 1));
 	return 0;

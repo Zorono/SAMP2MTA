@@ -228,6 +228,7 @@ int set_amxstring(AMX *amx,cell amx_addr,const char *source,int max)
 char* amx_FormatString(AMX* amx, cell* params, int32_t parm)
 {
     static char outbuf[4096];
+	memset(outbuf, 0, 4096);
 	atcprintf(outbuf, sizeof(outbuf) - 1, get_amxaddr(amx, params[parm++]), amx, params, &parm);
     return outbuf;
 }
@@ -363,11 +364,11 @@ char *GetCurrentNativeFunctionName(AMX *amx) // http://pro-pawn.ru/showthread.ph
     #endif
 }
 
-bool CheckNumberOfArguments(AMX *amx, const cell *params, int num_expected, bool funcF = false)
+bool CheckNumberOfArguments(AMX *amx, const cell *params, int num_expected)
 {
     if ((int)params[0] < (num_expected * (int)sizeof(cell))) {
         amx_RaiseError(amx, AMX_ERR_PARAMS);
-        logprintf("%s: Incorrect number of arguments (expected %d%s, got %d).", GetCurrentNativeFunctionName(amx), num_expected, (funcF ? "+" : ""), ((int)params[0] / (int)sizeof(cell)));
+        logprintf("%s: Incorrect number of arguments (expected %d, got %d).", GetCurrentNativeFunctionName(amx), num_expected, ((int)params[0] / (int)sizeof(cell)));
         return false;
     }
     return true;
