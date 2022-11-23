@@ -107,6 +107,8 @@ set(MODULE_SRC
     "${CMAKE_SOURCE_DIR}/lua/print.c"
     "${CMAKE_SOURCE_DIR}/sha256/sha256.cpp"
     "${CMAKE_SOURCE_DIR}/sqlite/sqlite3.c"
+    "${CMAKE_SOURCE_DIR}/Format.cpp"
+    "${CMAKE_SOURCE_DIR}/syscalls.cpp"
     "${CMAKE_SOURCE_DIR}/util.cpp"
 	"${CMAKE_SOURCE_DIR}/ml_base.cpp"
 	"${CMAKE_SOURCE_DIR}/CFunctions.cpp"
@@ -117,7 +119,7 @@ if(UNIX)
         "${CMAKE_SOURCE_DIR}/linux/binreloc.c"
         "${CMAKE_SOURCE_DIR}/linux/getch.c"
     )
-    add_definitions(-DLINUX -DENABLE_BINRELOC -g)
+    add_definitions(-DLINUX -DENABLE_BINRELOC)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/linux)
 endif()
 
