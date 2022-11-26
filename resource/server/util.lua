@@ -712,7 +712,6 @@ end
 --]]
 
 function fileReadLine(hFile)
-	local fileRead, fileIsEOF = fileRead, fileIsEOF
 	if fileIsEOF(hFile) then
 		return false
 	end

@@ -185,8 +185,6 @@ MTAEXPORT void RegisterFunctions ( lua_State * luaVM )
 		pModuleManager->RegisterFunction(luaVM, "amxLoadPlugin", CFunctions::amxLoadPlugin);
 		pModuleManager->RegisterFunction(luaVM, "amxLoad", CFunctions::amxLoad);
 		pModuleManager->RegisterFunction(luaVM, "amxCall", CFunctions::amxCall);
-		pModuleManager->RegisterFunction(luaVM, "amxMTReadDATCell", CFunctions::amxMTReadDATCell);
-		pModuleManager->RegisterFunction(luaVM, "amxMTWriteDATCell", CFunctions::amxMTWriteDATCell);
 		pModuleManager->RegisterFunction(luaVM, "amxReadString", CFunctions::amxReadString);
 		pModuleManager->RegisterFunction(luaVM, "amxWriteString", CFunctions::amxWriteString);
 		pModuleManager->RegisterFunction(luaVM, "amxUnload", CFunctions::amxUnload);

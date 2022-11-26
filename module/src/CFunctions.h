@@ -31,8 +31,6 @@ public:
 	static int amxIsPluginLoaded(lua_State *luaVM);
 	static int amxLoad(lua_State *luaVM);
 	static int amxCall(lua_State *luaVM);
-	static int amxMTReadDATCell(lua_State *luaVM);
-	static int amxMTWriteDATCell(lua_State *luaVM);
 	static int amxReadString(lua_State *luaVM);
 	static int amxWriteString(lua_State *luaVM);
 	static int amxUnload(lua_State *luaVM);

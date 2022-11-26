@@ -78,10 +78,44 @@ function loadAMX(fileName, isGamemode)
 
 	-- set up reading/writing of code and data section
     if not (amx.flags % 8) >= 4 then -- check if code isn't compacted...'
-        amx.memCOD = setmetatable({ amx = amx.cptr }, { __index = amxMTReadCODCell })
-        amx.memDAT = setmetatable({ amx = amx.cptr }, { __index = amxMTReadDATCell, __newindex = amxMTWriteDATCell })
+        amx.memCOD = readDWORDs(hAMX, amx.COD, (amx.DAT - amx.COD))
+        amx.memDAT = readDWORDs(hAMX, amx.DAT, (amx.HEA - amx.DAT))
     else
-        --
+        fileSetPos(hAMX, 0)
+        local curByte
+        local firstByteOfDWORD = true
+        local curDWORDOffset = 0
+        local curDWORD = 0
+        local dwordsRead = 0
+
+        local result = {}
+        amx.memCOD = result
+        local dwordsInCOD = (amx.DAT-amx.COD)/4
+
+        fileSetPos(hAMX, amx.COD)
+        for i=1,(fileGetSize(hAMX) - amx.COD) do
+            if dwordsRead == dwordsInCOD and not amx.memDAT then
+                -- start filling up data if code is done
+                result = {}
+                amx.memDAT = result
+                curDWORDOffset = 0
+            end
+            curByte = readBYTE(hAMX)
+            if firstByteOfDWORD then
+                if (curByte % 0x80) >= 0x40 then
+                    curDWORD = 0xFFFFFFFF
+                end
+                firstByteOfDWORD = false
+            end
+            curDWORD = ((curDWORD * 128) % 4294967296) + (curByte % 0x80)
+            if curByte < 0x80 then
+                result[curDWORDOffset] = curDWORD
+                curDWORD = 0
+                curDWORDOffset = curDWORDOffset + 4
+                dwordsRead = dwordsRead + 1
+                firstByteOfDWORD = true
+            end
+        end
     end
     fileClose(hAMX)
 
@@ -195,6 +229,7 @@ addEventHandler('onResourceStart', resourceRoot,
                     "ColAndreas",
                     "crashdetect",
                     "nativefallback",
+                    "nativechecker",
                     "jit",
                     "sampvoice"
                 }) do

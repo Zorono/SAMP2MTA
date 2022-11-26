@@ -349,43 +349,6 @@ int CFunctions::amxCall(lua_State *luaVM) {
 	return 1;
 }
 
-// amxMTReadDATCell(t, addr)
-// __index metamethod
-int CFunctions::amxMTReadDATCell(lua_State *luaVM) {
-	if(!luaVM) return;
-	luaL_checktype(luaVM, 1, LUA_TTABLE);
-	cell addr = (cell)luaL_checknumber(luaVM, 2);
-	lua_getfield(luaVM, 1, "amx");
-	AMX *amx = (AMX *)lua_touserdata(luaVM, -1);
-	if(!amx)
-		return 0;
-	cell *physaddr;
-	amx_GetAddr(amx, addr, &physaddr);
-	if(!physaddr)
-		return 0;
-	lua_pushnumber(luaVM, *physaddr);
-	return 1;
-}
-
-// amxMTWriteCell(t, addr, value)
-// __newindex metamethod
-int CFunctions::amxMTWriteDATCell(lua_State *luaVM) {
-	if(!luaVM) return;
-	luaL_checktype(luaVM, 1, LUA_TTABLE);
-	cell addr = (cell)luaL_checknumber(luaVM, 2);
-	cell value = (cell)luaL_checknumber(luaVM, 3);
-	lua_getfield(luaVM, 1, "amx");
-	AMX *amx = (AMX *)lua_touserdata(luaVM, -1);
-	if(!amx)
-		return 0;
-	cell *physaddr;
-	amx_GetAddr(amx, addr, &physaddr);
-	if(!physaddr)
-		return 0;
-	*physaddr = value;
-	return 0;
-}
-
 // amxReadString(amxptr, addr, maxlen)
 int CFunctions::amxReadString(lua_State *luaVM) {
 	if(!luaVM) return;
