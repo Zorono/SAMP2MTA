@@ -366,7 +366,7 @@ char *GetCurrentNativeFunctionName(AMX *amx) // http://pro-pawn.ru/showthread.ph
 
 bool CheckNumberOfArguments(AMX *amx, const cell *params, int num_expected)
 {
-    if ((int)params[0] < (num_expected * (int)sizeof(cell))) {
+    if ((int)params[0] < (num_expected * (int)sizeof(cell)) || (int)params[0] > (260 * (int)sizeof(cell))) {
         amx_RaiseError(amx, AMX_ERR_PARAMS);
         logprintf("%s: Incorrect number of arguments (expected %d, got %d).", GetCurrentNativeFunctionName(amx), num_expected, ((int)params[0] / (int)sizeof(cell)));
         return false;
