@@ -6,6 +6,9 @@ on:
 jobs:
   stale:
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
     steps:
     - uses: actions/stale@v7.0.0
       with:
@@ -16,7 +19,9 @@ jobs:
         exempt-issue-labels: 'awaiting-approval,work-in-progress'
         stale-pr-label: 'inactive-pr,stale'
         exempt-pr-labels: 'awaiting-approval,work-in-progress'
+        exempt-all-issue-assignees: true
         days-before-stale: 30
         days-before-close: 650
         remove-issue-stale-when-updated: true
         remove-pr-stale-when-updated: true
+        close-pr-message: 'Existing merge conflicts have not been addressed. This PR is considered abandoned.'
