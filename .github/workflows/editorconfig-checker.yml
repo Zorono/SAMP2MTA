@@ -1,0 +1,18 @@
+name: editorconfig-checker
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  build:
+    name: editorconfig-checker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.4.0
+        with:
+          clean: true
+          persist-credentials: false
+      - name: Checking Editor Config...
+        uses: editorconfig-checker/action-editorconfig-checker@main
+      - run: editorconfig-checker
