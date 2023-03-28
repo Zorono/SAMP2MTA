@@ -94,7 +94,7 @@ native Float:GetSVarFloat(varname[]);
 native DeleteSVar(varname[]);
 
 // SVar enumeration
-#define	SERVER_VARTYPE_NONE			0
+#define SERVER_VARTYPE_NONE			0
 #define SERVER_VARTYPE_INT			1
 #define SERVER_VARTYPE_STRING		2
 #define SERVER_VARTYPE_FLOAT		3

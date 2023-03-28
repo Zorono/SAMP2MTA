@@ -9,7 +9,7 @@ typedef void (*varFuncType)();
 
 #define SERVER_VARTYPE_FLOAT	0
 #define SERVER_VARTYPE_INT		1
-#define SERVER_VARTYPE_BOOL	2
+#define SERVER_VARTYPE_BOOL	    2
 #define SERVER_VARTYPE_STRING	3
 
 struct serverVarStruct

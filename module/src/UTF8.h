@@ -21,6 +21,7 @@
  *
  * $Id: scim_utility.cpp,v 1.48.2.5 2006/11/02 04:11:51 suzhe Exp $
  */
+#pragma once
 
 /* Return code if invalid. (xxx_mbtowc, xxx_wctomb) */
 #define RET_ILSEQ      0
@@ -32,8 +33,7 @@
 #define BAD_WCHAR ((wchar_t) 0xfffd)
 #define BAD_CHAR '?'
 
-int
-utf8_mbtowc (wchar_t *pwc, const unsigned char *src, int src_len)
+int utf8_mbtowc (wchar_t *pwc, const unsigned char *src, int src_len)
 {
     if (!pwc)
         return 0;
@@ -107,8 +107,7 @@ utf8_mbtowc (wchar_t *pwc, const unsigned char *src, int src_len)
         return RET_ILSEQ;
 }
 
-int
-utf8_wctomb (unsigned char *dest, wchar_t wc, int dest_size)
+int utf8_wctomb (unsigned char *dest, wchar_t wc, int dest_size)
 {
     if (!dest)
         return 0;
@@ -141,8 +140,7 @@ utf8_wctomb (unsigned char *dest, wchar_t wc, int dest_size)
     return count;
 }
 
-std::wstring
-utf8_mbstowcs (const std::string & str)
+std::wstring utf8_mbstowcs (const std::string & str)
 {
     std::wstring wstr;
     wchar_t wc;
@@ -160,8 +158,7 @@ utf8_mbstowcs (const std::string & str)
     return wstr;
 }
 
-std::string
-utf8_wcstombs (const std::wstring & wstr)
+std::string utf8_wcstombs (const std::wstring & wstr)
 {
     std::string str;
     char utf8 [6];
